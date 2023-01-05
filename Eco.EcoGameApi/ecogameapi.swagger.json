@@ -1,0 +1,4996 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Eco Game API",
+        "description": "First API draft for Eco. Heavy work in progress and subject to changes.",
+        "version": "v1"
+    },
+    "paths": {
+        "/api/v1/admin/set/access": {
+            "post": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Sets how accessible this server is.",
+                "operationId": "Admin_PostSetAccess",
+                "parameters": [{
+                        "in": "query",
+                        "name": "value",
+                        "description": "Can be 'public' (listed in server browser, no password), 'private' (listed in server browser, with password) or 'hidden' (unlisted, without password).",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "password",
+                        "description": "If setting private, must set a password. If not set to private, this is unused.",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/admin/get/access": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "operationId": "Admin_GetGetAccess",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/admin/set/servername": {
+            "post": {
+                "tags": [
+                    "Admin"
+                ],
+                "operationId": "Admin_PostSetServerName",
+                "parameters": [{
+                        "in": "query",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/admin/get/servername": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "operationId": "Admin_GetGetServerName",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/admin/game/export": {
+            "post": {
+                "tags": [
+                    "Admin"
+                ],
+                "operationId": "Admin_PostGameExport",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.WebServer.Web.Models.ExportGameModel"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.WebServer.Web.Models.AdminReturnModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/chat": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Returns all non-private player chat messages sent within the given time range.",
+                "operationId": "Chat_GetChat",
+                "parameters": [{
+                        "in": "query",
+                        "name": "startDay",
+                        "description": "The lower bound on the time range. Default is 0.",
+                        "type": "number",
+                        "format": "double",
+                        "default": 0
+                    },
+                    {
+                        "in": "query",
+                        "name": "endDay",
+                        "description": "The upper bound on the time range. Default is now.",
+                        "type": "number",
+                        "format": "double",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/chat/tag": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Returns all non-private player chat messages sent to the given tag within the given time range.",
+                "operationId": "Chat_GetChatByTag",
+                "parameters": [{
+                        "in": "query",
+                        "name": "tag",
+                        "description": "The tag name in question.",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "startDay",
+                        "description": "The lower bound on the time range. Default is 0.",
+                        "type": "number",
+                        "format": "double",
+                        "default": 0
+                    },
+                    {
+                        "in": "query",
+                        "name": "endDay",
+                        "description": "The upper bound on the time range. Default is now.",
+                        "type": "number",
+                        "format": "double",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/chat/{username}": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Returns all non-private chat messages sent by the given user within the given time range.",
+                "operationId": "Chat_GetChatMessagesSentBy",
+                "parameters": [{
+                        "in": "path",
+                        "name": "username",
+                        "description": "The user in question.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "startDay",
+                        "description": "The lower bound on the time range. Default is 0.",
+                        "type": "number",
+                        "format": "double",
+                        "default": 0
+                    },
+                    {
+                        "in": "query",
+                        "name": "endDay",
+                        "description": "The upper bound on the time range. Default is now.",
+                        "type": "number",
+                        "format": "double",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/chat/next": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Gets the. ```numNextMessages``` chat messages sent after the given message on the same tag.",
+                "operationId": "Chat_GetNext",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "numNextMessages",
+                        "description": "The number of following messages to return.",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The message in question.",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ChatMessageV1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/chat/previous": {
+            "post": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Gets the. ```numPreviousMessages``` chat messages sent before the given message on the same tag.",
+                "operationId": "Chat_GetPrevious",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "numPreviousMessages",
+                        "description": "The number of preceding messages to return.",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The message in question.",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ChatMessageV1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/chat/sendChat": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Sends chat message like username.",
+                "description": "> This endpoint can only be invoked when AllowDebugCalls is enabled on the server.",
+                "operationId": "Chat_SendChat",
+                "parameters": [{
+                        "in": "query",
+                        "name": "username",
+                        "description": "User who wants to send message.",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "message",
+                        "description": "The message to send.",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/command/exec": {
+            "post": {
+                "tags": [
+                    "Command"
+                ],
+                "summary": "Executes a chat command on the server.",
+                "operationId": "Command_ExecCommand",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ExecuteCommandV1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.CommandResultV1"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/exporter/all": {
+            "post": {
+                "tags": [
+                    "DataExport"
+                ],
+                "operationId": "DataExport_PostExportAll",
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/exporter/chat": {
+            "post": {
+                "tags": [
+                    "DataExport"
+                ],
+                "operationId": "DataExport_PostExportChat",
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/exporter/species": {
+            "post": {
+                "tags": [
+                    "DataExport"
+                ],
+                "operationId": "DataExport_PostExportSpecies",
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            },
+            "get": {
+                "tags": [
+                    "DataExport"
+                ],
+                "operationId": "DataExport_GetExportSpecies",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "speciesName",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/exporter/environment": {
+            "post": {
+                "tags": [
+                    "DataExport"
+                ],
+                "operationId": "DataExport_PostExportEnvironment",
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            },
+            "get": {
+                "tags": [
+                    "DataExport"
+                ],
+                "operationId": "DataExport_GetExportEnvironment",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "category",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "units",
+                        "type": "string",
+                        "default": "PPM"
+                    },
+                    {
+                        "in": "query",
+                        "name": "column",
+                        "type": "string",
+                        "default": "Climate"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/exporter/actions": {
+            "post": {
+                "tags": [
+                    "DataExport"
+                ],
+                "operationId": "DataExport_PostExportActions",
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            },
+            "get": {
+                "tags": [
+                    "DataExport"
+                ],
+                "operationId": "DataExport_GetExportAction",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "actionName",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/exporter/actionlist": {
+            "get": {
+                "tags": [
+                    "DataExport"
+                ],
+                "operationId": "DataExport_GetActionList",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/exporter/specieslist": {
+            "get": {
+                "tags": [
+                    "DataExport"
+                ],
+                "operationId": "DataExport_GetSpeciesList",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/exporter/environmentlist": {
+            "get": {
+                "tags": [
+                    "DataExport"
+                ],
+                "operationId": "DataExport_GetEnvironmentList",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/elections/titles": {
+            "get": {
+                "tags": [
+                    "Election"
+                ],
+                "summary": "Returns all elected titles and their occupants matching the given state (active by default).",
+                "operationId": "Election_ListElectedTitles",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                    "in": "query",
+                    "name": "state"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ElectedTitleV1"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/elections": {
+            "get": {
+                "tags": [
+                    "Election"
+                ],
+                "summary": "Returns all elections that are either active or inactive.",
+                "operationId": "Election_ListElections",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                    "in": "query",
+                    "name": "returnActive",
+                    "type": "boolean",
+                    "default": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.GameServerElectionV1"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/elections/{id}": {
+            "get": {
+                "tags": [
+                    "Election"
+                ],
+                "summary": "Returns the election with the given id.",
+                "operationId": "Election_GetElectionById",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.GameServerElectionV1"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/elections/titles/{id}": {
+            "get": {
+                "tags": [
+                    "Election"
+                ],
+                "summary": "Returns the elected title with the given id.",
+                "operationId": "Election_GetElectedTitleById",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ElectedTitleV1"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/elections/votes": {
+            "get": {
+                "tags": [
+                    "Election"
+                ],
+                "summary": "Returns a list of votes that were made on the indicated election. \r\n           If a user is logged in their own votes will be revealed when voting is anonymous.",
+                "operationId": "Election_Votes",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                    "in": "query",
+                    "name": "id",
+                    "type": "integer",
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.RunoffVoteV1"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/elections/vote": {
+            "post": {
+                "tags": [
+                    "Election"
+                ],
+                "summary": "Places a vote on behalf of the given player.  Can only be called if an election is currently running.",
+                "description": "> This endpoint can only be invoked by a ??.",
+                "operationId": "Election_Vote",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "forceVote",
+                        "description": "Force vote ignoring election process.",
+                        "type": "boolean"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The player's vote.  Must contain a ranked list of all candidates for the current election.",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.RunoffVoteV1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [
+                        "RequiresEcoUser"
+                    ],
+                    "authtokentype": [
+                        "RequiresEcoUser"
+                    ]
+                }]
+            }
+        },
+        "/api/v1/elections/forceelectionend": {
+            "post": {
+                "tags": [
+                    "Election"
+                ],
+                "summary": "Forces the currently running election to end now, and for the current election winner to become the leader. Can only be called by an admin or dev.",
+                "description": "> This endpoint can only be invoked by a Admin user.",
+                "operationId": "Election_ForceElectionEnd",
+                "parameters": [{
+                        "in": "query",
+                        "name": "electionId",
+                        "description": "ID of the election.",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [
+                        "RequireAdmin"
+                    ],
+                    "authtokentype": [
+                        "RequireAdmin"
+                    ]
+                }]
+            }
+        },
+        "/api/v1/elections/addcomment": {
+            "post": {
+                "tags": [
+                    "Election"
+                ],
+                "summary": "Adds a comment to the currently running election, if any.",
+                "description": "> This endpoint can only be invoked by a ??.",
+                "operationId": "Election_AddComment",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "electionId",
+                        "description": "ID of the election.",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The comment to be added to the election.",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ElectionCommentV1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [
+                        "RequiresEcoUser"
+                    ],
+                    "authtokentype": [
+                        "RequiresEcoUser"
+                    ]
+                }]
+            }
+        },
+        "/api/v1/elections/listcomments": {
+            "get": {
+                "tags": [
+                    "Election"
+                ],
+                "summary": "List comments on the election.",
+                "operationId": "Election_GetComments",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                    "in": "query",
+                    "name": "electionId",
+                    "description": "ID of the election.",
+                    "type": "integer",
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ElectionCommentV1"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/elections/generatetestdata": {
+            "post": {
+                "tags": [
+                    "Election"
+                ],
+                "summary": "Create a bunch of test elections.",
+                "description": "> This endpoint can only be invoked when AllowDebugCalls is enabled on the server.",
+                "operationId": "Election_GenerateTestData",
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/elections/finishelection": {
+            "post": {
+                "tags": [
+                    "Election"
+                ],
+                "description": "> This endpoint can only be invoked when AllowDebugCalls is enabled on the server.",
+                "operationId": "Election_FinishElection",
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/laws/byStates/{states}": {
+            "get": {
+                "tags": [
+                    "Law"
+                ],
+                "summary": "Returns all laws currently present in the game in the specified states, active by default.",
+                "operationId": "Law_List",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "states",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.LawV1"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/laws": {
+            "get": {
+                "tags": [
+                    "Law"
+                ],
+                "summary": "Returns all laws currently present in the game",
+                "operationId": "Law_ListAll",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.LawV1"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/laws/districtmap/{name}": {
+            "get": {
+                "tags": [
+                    "Law"
+                ],
+                "operationId": "Law_GetDistrictMap",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "name",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.DistrictMapV1"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/laws/{id}": {
+            "get": {
+                "tags": [
+                    "Law"
+                ],
+                "summary": "Returns the law with the specified id.",
+                "operationId": "Law_GetLaw",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "id",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int32"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.LawV1"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/laws/generatetestdata": {
+            "post": {
+                "tags": [
+                    "Law"
+                ],
+                "summary": "Genereate test laws.",
+                "description": "> This endpoint can only be invoked by a DevTier user.",
+                "operationId": "Law_GenerateTestData",
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [
+                        "RequireDev"
+                    ],
+                    "authtokentype": [
+                        "RequireDev"
+                    ]
+                }]
+            }
+        },
+        "/api/v1/logs": {
+            "get": {
+                "tags": [
+                    "Log"
+                ],
+                "summary": "Retrieves a list of all log files on the server.",
+                "operationId": "Log_GetAllLogs",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/logs/{category}": {
+            "get": {
+                "tags": [
+                    "Log"
+                ],
+                "summary": "Retrieves a list of all log files in the requested category subfolder if it exists.",
+                "operationId": "Log_GetCategoryLogs",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "path",
+                        "name": "category",
+                        "description": "Category log subfolder to search.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/logs/get": {
+            "get": {
+                "tags": [
+                    "Log"
+                ],
+                "summary": "Streams a log file over HTTP/HTTPS to a client.",
+                "operationId": "Log_GetLogFile",
+                "parameters": [{
+                        "in": "query",
+                        "name": "filepath",
+                        "description": "Filepath of the log file to stream.",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/map/mapstats": {
+            "get": {
+                "tags": [
+                    "Map"
+                ],
+                "operationId": "Map_MapStats",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.MapStatsV1"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/map/entitytypes": {
+            "get": {
+                "tags": [
+                    "Map"
+                ],
+                "summary": "Allows access to all species currently available in the simulation.",
+                "operationId": "Map_EntityTypes",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/map/entities": {
+            "get": {
+                "tags": [
+                    "Map"
+                ],
+                "summary": "Allows access to all entities currently available in the simulation.",
+                "operationId": "Map_Entities",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "entityTypes",
+                        "description": "A list of user type names that will be used to filter the response.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "states",
+                        "description": "A list of Animal states that will be used to filter the response.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.EntityV1"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/map/dimension": {
+            "get": {
+                "tags": [
+                    "Map"
+                ],
+                "summary": "Returns the dimension of the world, in blocks.",
+                "operationId": "Map_GetDimension",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Shared.Math.Vector3i"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/map/layerList": {
+            "get": {
+                "tags": [
+                    "Map"
+                ],
+                "summary": "List Layer Names.",
+                "operationId": "Map_LayerList",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/map/map.json": {
+            "get": {
+                "tags": [
+                    "Map"
+                ],
+                "summary": "One request to get all required web map data.",
+                "operationId": "Map_MakeMapJSON",
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/map/waterLevel": {
+            "get": {
+                "tags": [
+                    "Map"
+                ],
+                "summary": "Get water height.",
+                "operationId": "Map_WaterLevel",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "format": "float",
+                            "type": "number"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/map/property": {
+            "get": {
+                "tags": [
+                    "Map"
+                ],
+                "operationId": "Map_GetProperty",
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/plugins": {
+            "get": {
+                "tags": [
+                    "Plugins"
+                ],
+                "summary": "Gets the list and status of all running plugins on the server.",
+                "operationId": "Plugins_GetPlugins",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.PluginInfoV1"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/plugins/{name}": {
+            "get": {
+                "tags": [
+                    "Plugins"
+                ],
+                "operationId": "Plugins_GetPluginConfig",
+                "parameters": [{
+                        "in": "path",
+                        "name": "name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            },
+            "post": {
+                "tags": [
+                    "Plugins"
+                ],
+                "summary": "Sets the configuration options for the given plugin.",
+                "operationId": "Plugins_PostPluginConfig",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "parameters": [{
+                        "in": "path",
+                        "name": "name",
+                        "description": "The name of the plugin.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "New plugin config.",
+                        "schema": {}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/profiling-results": {
+            "get": {
+                "tags": [
+                    "ProfilingResults"
+                ],
+                "summary": "Returns the list of generated profiling results.",
+                "operationId": "ProfilingResults_List",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ProfilingResultV1"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/profiling-results/{filename}": {
+            "get": {
+                "tags": [
+                    "ProfilingResults"
+                ],
+                "operationId": "ProfilingResults_Download",
+                "parameters": [{
+                        "in": "path",
+                        "name": "filename",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/info": {
+            "get": {
+                "tags": [
+                    "Root"
+                ],
+                "operationId": "Root_GetInfo",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Shared.Networking.ServerInfo"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/frontpage": {
+            "get": {
+                "tags": [
+                    "Root"
+                ],
+                "operationId": "Root_FrontPage",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.FrontPageV1"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/admins": {
+            "get": {
+                "tags": [
+                    "Root"
+                ],
+                "summary": "Returns the server's configured administrative users.",
+                "operationId": "Root_GetAdmins",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/isadmin": {
+            "get": {
+                "tags": [
+                    "Root"
+                ],
+                "summary": "Return if the user is an admin and authentication is required.",
+                "operationId": "Root_IsAdmin",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/datasets/timerange": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "/// Returns the timerange of the simulation, in days///.",
+                "operationId": "Stats_GetTimeRange",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "format": "float",
+                                "type": "number"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/datasets/treelist": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Returns all dataset keys, formatted as a tree. ///.",
+                "operationId": "Stats_GetTreeList",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.Stats.StatCategory"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/datasets/flatlist": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "/// Returns all stat infos that contain data, formatted as a list, where each key is a list of strings. ///.",
+                "operationId": "Stats_GetFlatList",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Stats.StatInfo"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/datasets/get": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "/// Returns Eco.WebServer.Web.Controllers.StatsController.MaximumSamples data points between dayStart and dayEnd of the selected data.\r\n           If there are more than Eco.WebServer.Web.Controllers.StatsController.MaximumSamples samples, it will be averaged out to contain exactly Eco.WebServer.Web.Controllers.StatsController.MaximumSamples.///.",
+                "operationId": "Stats_Get",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "dataset",
+                        "description": "dataset to take the data from.",
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "dayStart",
+                        "description": "Day from which on data is returned. Default is 0.",
+                        "type": "number",
+                        "format": "double",
+                        "default": 0
+                    },
+                    {
+                        "in": "query",
+                        "name": "dayEnd",
+                        "description": "Day until which data is returned. Default is now.",
+                        "type": "number",
+                        "format": "double",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Eco.WebServer.Web.Controllers.StatReturn"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/datasets/getlist": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Returns a \"package\" of multiple statistics in the order of their request.",
+                "operationId": "Stats_GetList",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "requestedSets",
+                        "description": "A list of statistics that should be returned.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "dayStart",
+                        "description": "Day from which the data should be taken from. Default is 0.",
+                        "type": "number",
+                        "format": "double",
+                        "default": 0
+                    },
+                    {
+                        "in": "query",
+                        "name": "dayEnd",
+                        "description": "Day until which data is returned. Default is now.",
+                        "type": "number",
+                        "format": "double",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.WebServer.Web.Controllers.StatReturn"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/datasets/graphs": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Returns the list of premade graphs to be displayed on the front page.",
+                "operationId": "Stats_Graphs",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Stats.NamedGraph"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/datasets/generatetestdata": {
+            "get": {
+                "tags": [
+                    "Stats"
+                ],
+                "summary": "Generates fake stat data for testing.",
+                "description": "> This endpoint can only be invoked when AllowDebugCalls is enabled on the server.",
+                "operationId": "Stats_GenerateTestData",
+                "parameters": [{
+                        "in": "query",
+                        "name": "days",
+                        "description": "The number of days to simulate.",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    {
+                        "in": "query",
+                        "name": "users",
+                        "description": "The number of users to simulate.",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "in": "query",
+                        "name": "generateClimateData",
+                        "description": "Whether to generate climate data. Default is false.",
+                        "type": "boolean",
+                        "default": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "pollutionMultiplier",
+                        "description": "How much pollution to generate. Default is 1.",
+                        "type": "number",
+                        "format": "float",
+                        "default": 1
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "operationId": "Users_GetUsers",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "hoursPlayedGte",
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.UserV1"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/worldlayers/layers": {
+            "get": {
+                "tags": [
+                    "WorldLayer"
+                ],
+                "summary": "Enumerates every world layer in the simulation.",
+                "operationId": "WorldLayer_ListLayers",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.WorldLayers.WorldLayerGroupV1"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/worldlayers/layers/{focusLayer}": {
+            "get": {
+                "tags": [
+                    "WorldLayer"
+                ],
+                "summary": "Enumerates the layers that should be displayed when the user is focused on a particular layer and world area.",
+                "operationId": "WorldLayer_ListRelevantLayers",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "path",
+                        "name": "focusLayer",
+                        "description": "Name of the layer we're querying.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "minX",
+                        "description": "The least x boundary of the viewed area, in world coordinates.  Should not be wrapped.",
+                        "type": "number",
+                        "format": "float",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "minY",
+                        "description": "The least y boundary of the viewed area, in world coordinates.  Should not be wrapped.",
+                        "type": "number",
+                        "format": "float",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "maxX",
+                        "description": "The greatest x boundary of the viewed area, in world coordinates.  Should not be wrapped.",
+                        "type": "number",
+                        "format": "float",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "maxY",
+                        "description": "The greatest y boundary of the viewed area, in world coordinates.  Should not be wrapped.",
+                        "type": "number",
+                        "format": "float",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.WorldLayers.WorldLayerV1"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/worldlayers/relationships/areadescription": {
+            "get": {
+                "tags": [
+                    "WorldLayer"
+                ],
+                "summary": "Describes the area selected with a string.",
+                "operationId": "WorldLayer_AreaDescription",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "query",
+                        "name": "minX",
+                        "description": "The least x boundary of the viewed area, in world coordinates.  Should not be wrapped.",
+                        "type": "number",
+                        "format": "float",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "minY",
+                        "description": "The least y boundary of the viewed area, in world coordinates.  Should not be wrapped.",
+                        "type": "number",
+                        "format": "float",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "maxX",
+                        "description": "The greatest x boundary of the viewed area, in world coordinates.  Should not be wrapped.",
+                        "type": "number",
+                        "format": "float",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "maxY",
+                        "description": "The greatest y boundary of the viewed area, in world coordinates.  Should not be wrapped.",
+                        "type": "number",
+                        "format": "float",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        },
+        "/api/v1/worldlayers/relationships/{focusLayer}": {
+            "get": {
+                "tags": [
+                    "WorldLayer"
+                ],
+                "summary": "Enumerates the layer relationships that should be displayed when the user is focused on a particular layer and world area.",
+                "operationId": "WorldLayer_ListRelevantRelationships",
+                "produces": [
+                    "text/plain",
+                    "application/json",
+                    "text/json"
+                ],
+                "parameters": [{
+                        "in": "path",
+                        "name": "focusLayer",
+                        "description": "The name of the focused layer.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "minX",
+                        "description": "The least x boundary of the viewed area, in world coordinates.  Should not be wrapped.",
+                        "type": "number",
+                        "format": "float",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "minY",
+                        "description": "The least y boundary of the viewed area, in world coordinates.  Should not be wrapped.",
+                        "type": "number",
+                        "format": "float",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "maxX",
+                        "description": "The greatest x boundary of the viewed area, in world coordinates.  Should not be wrapped.",
+                        "type": "number",
+                        "format": "float",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "maxY",
+                        "description": "The greatest y boundary of the viewed area, in world coordinates.  Should not be wrapped.",
+                        "type": "number",
+                        "format": "float",
+                        "default": -1
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtoken",
+                        "description": "Eco user authentication token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "authtokentype",
+                        "description": "Eco user authentication token type.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "slg",
+                            "steam_encrypted_token"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.WorldLayers.LayerRelationshipV1"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [{
+                    "authtoken": [],
+                    "authtokentype": []
+                }]
+            }
+        }
+    },
+    "definitions": {
+        "Eco.Gameplay.Civics.Elections.ChoiceResults": {
+            "type": "object",
+            "properties": {
+                "ChoiceID": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "MarkedUpNameString": {
+                    "type": "string"
+                },
+                "VotesPerRound": {
+                    "type": "array",
+                    "items": {
+                        "format": "float",
+                        "type": "number"
+                    }
+                },
+                "Votes": {
+                    "format": "float",
+                    "type": "number",
+                    "readOnly": true
+                },
+                "SimpleResultVotes": {
+                    "format": "float",
+                    "type": "number",
+                    "readOnly": true
+                }
+            }
+        },
+        "Eco.Shared.Items.ProposableState": {
+            "enum": [
+                "Uninitialized",
+                "Draft",
+                "Proposed",
+                "Active",
+                "Removed",
+                "Failed"
+            ],
+            "type": "string"
+        },
+        "Eco.Shared.Localization.LocString": {
+            "type": "object",
+            "properties": {
+                "NotTranslated": {
+                    "type": "string",
+                    "readOnly": true
+                },
+                "Inlinable": {
+                    "type": "boolean",
+                    "readOnly": true
+                },
+                "Length": {
+                    "format": "int32",
+                    "type": "integer",
+                    "readOnly": true
+                }
+            }
+        },
+        "Eco.Shared.Math.Direction": {
+            "enum": [
+                "Unknown",
+                "None",
+                "Left",
+                "Right",
+                "Back",
+                "Forward",
+                "Down",
+                "Up"
+            ],
+            "type": "string"
+        },
+        "Eco.Shared.Math.Ray": {
+            "type": "object",
+            "properties": {
+                "Pos": {
+                    "$ref": "#/definitions/Eco.Shared.Math.Vector3i"
+                },
+                "Dir": {
+                    "$ref": "#/definitions/Eco.Shared.Math.Direction"
+                },
+                "FirstPos": {
+                    "$ref": "#/definitions/Eco.Shared.Math.Vector3i"
+                },
+                "FirstRay": {
+                    "$ref": "#/definitions/Eco.Shared.Math.Ray"
+                }
+            }
+        },
+        "Eco.Shared.Math.Vector2i": {
+            "type": "object",
+            "properties": {
+                "x": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "y": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "Length": {
+                    "format": "float",
+                    "type": "number",
+                    "readOnly": true
+                },
+                "Magnitude": {
+                    "format": "float",
+                    "type": "number",
+                    "readOnly": true
+                },
+                "MagnitudeSq": {
+                    "format": "float",
+                    "type": "number",
+                    "readOnly": true
+                },
+                "Area": {
+                    "format": "int32",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "NeighborsAdjacent": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Math.Vector2i"
+                    },
+                    "readOnly": true
+                },
+                "NeighborsDiagonal": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Math.Vector2i"
+                    },
+                    "readOnly": true
+                }
+            }
+        },
+        "Eco.Shared.Math.Vector3i": {
+            "type": "object",
+            "properties": {
+                "x": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "y": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "z": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "Magnitude": {
+                    "format": "float",
+                    "type": "number",
+                    "readOnly": true
+                },
+                "SqrMagnitude": {
+                    "format": "int32",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "MultTogether": {
+                    "format": "int32",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "XZ": {
+                    "$ref": "#/definitions/Eco.Shared.Math.Vector2i"
+                },
+                "XZFullNeighborsAndSelf": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Math.Vector3i"
+                    },
+                    "readOnly": true
+                },
+                "XZNeighborsAndSelf": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Math.Vector3i"
+                    },
+                    "readOnly": true
+                },
+                "XZNeighborsAndDir": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Math.Ray"
+                    },
+                    "readOnly": true
+                },
+                "XZNeighbors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Math.Vector3i"
+                    },
+                    "readOnly": true
+                },
+                "XZFullNeighbors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Math.Vector3i"
+                    },
+                    "readOnly": true
+                },
+                "XYZNeighborsAndSelf": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Math.Vector3i"
+                    },
+                    "readOnly": true
+                },
+                "XYZNeighbors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Math.Vector3i"
+                    },
+                    "readOnly": true
+                },
+                "Full26Neighbors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Math.Vector3i"
+                    },
+                    "readOnly": true
+                },
+                "Normalized": {
+                    "$ref": "#/definitions/System.Numerics.Vector3"
+                },
+                "NormalizedOrZero": {
+                    "$ref": "#/definitions/System.Numerics.Vector3"
+                }
+            }
+        },
+        "Eco.Shared.Networking.ServerInfo": {
+            "type": "object",
+            "properties": {
+                "Id": {
+                    "$ref": "#/definitions/System.Guid"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "Address": {
+                    "type": "string"
+                },
+                "External": {
+                    "type": "boolean"
+                },
+                "GamePort": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "WebPort": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "IsLAN": {
+                    "type": "boolean"
+                },
+                "Description": {
+                    "type": "string"
+                },
+                "DetailedDescription": {
+                    "type": "string"
+                },
+                "Category": {
+                    "$ref": "#/definitions/Eco.Shared.States.ServerCategory"
+                },
+                "OnlinePlayers": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "TotalPlayers": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "OnlinePlayersNames": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "AdminOnline": {
+                    "type": "boolean"
+                },
+                "TimeSinceStart": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "TimeLeft": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "Animals": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "Plants": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "Laws": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "WorldSize": {
+                    "type": "string"
+                },
+                "Version": {
+                    "type": "string"
+                },
+                "EconomyDesc": {
+                    "type": "string"
+                },
+                "SkillSpecialization": {
+                    "type": "string"
+                },
+                "SkillSpecializationSetting": {
+                    "$ref": "#/definitions/Eco.Shared.Networking.SkillSpecializationSetting"
+                },
+                "WorldObjective": {
+                    "type": "string"
+                },
+                "Language": {
+                    "type": "string"
+                },
+                "HasPassword": {
+                    "type": "boolean"
+                },
+                "HasMeteor": {
+                    "type": "boolean"
+                },
+                "DistributionStationItems": {
+                    "type": "string"
+                },
+                "Playtimes": {
+                    "type": "string"
+                },
+                "DiscordAddress": {
+                    "type": "string"
+                },
+                "IsPaused": {
+                    "type": "boolean"
+                },
+                "ActiveAndOnlinePlayers": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "PeakActivePlayers": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "MaxActivePlayers": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "ShelfLifeMultiplier": {
+                    "format": "float",
+                    "type": "number"
+                },
+                "ExhaustionAfterHours": {
+                    "format": "float",
+                    "type": "number"
+                },
+                "IsLimitingHours": {
+                    "type": "boolean"
+                },
+                "ServerAchievements": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "RelayAddress": {
+                    "type": "string"
+                },
+                "Access": {
+                    "type": "string"
+                },
+                "JoinUrl": {
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "Eco.Shared.Networking.SkillSpecializationSetting": {
+            "enum": [
+                "VeryLow",
+                "Low",
+                "Medium",
+                "High",
+                "VeryHigh"
+            ],
+            "type": "string"
+        },
+        "Eco.Shared.States.ServerCategory": {
+            "enum": [
+                "None",
+                "Beginner",
+                "Established",
+                "BeginnerHard",
+                "Strange"
+            ],
+            "type": "string"
+        },
+        "Eco.Shared.Utils.Color": {
+            "type": "object",
+            "properties": {
+                "R": {
+                    "format": "float",
+                    "type": "number"
+                },
+                "G": {
+                    "format": "float",
+                    "type": "number"
+                },
+                "B": {
+                    "format": "float",
+                    "type": "number"
+                },
+                "A": {
+                    "format": "float",
+                    "type": "number"
+                },
+                "UIntUnit2y": {
+                    "format": "int32",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "UIntUnity": {
+                    "format": "int32",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "UInt": {
+                    "format": "int32",
+                    "type": "integer",
+                    "readOnly": true
+                },
+                "HexRGBA": {
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "Eco.Stats.Graph": {
+            "type": "object",
+            "properties": {
+                "Keys": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Stats.Key"
+                    }
+                },
+                "TimeMin": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "TimeMax": {
+                    "format": "double",
+                    "type": "number"
+                }
+            }
+        },
+        "Eco.Stats.Key": {
+            "type": "object",
+            "properties": {
+                "Unit": {
+                    "$ref": "#/definitions/Eco.Stats.Unit"
+                },
+                "Value": {
+                    "type": "string"
+                },
+                "UnitDisplayName": {
+                    "type": "string"
+                },
+                "DisplayName": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.Stats.NamedGraph": {
+            "type": "object",
+            "properties": {
+                "Category": {
+                    "$ref": "#/definitions/Eco.Shared.Localization.LocString"
+                },
+                "Name": {
+                    "$ref": "#/definitions/Eco.Shared.Localization.LocString"
+                },
+                "Graph": {
+                    "$ref": "#/definitions/Eco.Stats.Graph"
+                }
+            }
+        },
+        "Eco.Stats.StatCategory": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "type": "string"
+                },
+                "DisplayName": {
+                    "type": "string"
+                },
+                "ChildrenStats": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Stats.StatInfo"
+                    }
+                },
+                "ChildrenCategories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Stats.StatCategory"
+                    }
+                }
+            }
+        },
+        "Eco.Stats.StatInfo": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "type": "string"
+                },
+                "DisplayName": {
+                    "type": "string"
+                },
+                "Unit": {
+                    "type": "string"
+                },
+                "UnitDisplayName": {
+                    "type": "string"
+                },
+                "StatType": {
+                    "$ref": "#/definitions/Eco.Stats.StatType"
+                },
+                "ShortName": {
+                    "type": "string"
+                },
+                "Description": {
+                    "type": "string"
+                },
+                "Tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ValueKey": {
+                    "type": "string"
+                },
+                "SystemType": {
+                    "type": "string"
+                },
+                "HasValueKey": {
+                    "type": "boolean"
+                },
+                "IsCustom": {
+                    "type": "boolean",
+                    "readOnly": true
+                },
+                "IsAction": {
+                    "type": "boolean",
+                    "readOnly": true
+                },
+                "IsCountable": {
+                    "type": "boolean",
+                    "readOnly": true
+                },
+                "IsAggregatable": {
+                    "type": "boolean",
+                    "readOnly": true
+                },
+                "TimeKey": {
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "Eco.Stats.StatType": {
+            "enum": [
+                "ContinuousValue",
+                "EventValue"
+            ],
+            "type": "string"
+        },
+        "Eco.Stats.Unit": {
+            "enum": [
+                "Organisms",
+                "Population",
+                "ActionsPerHour",
+                "CO2PPM",
+                "Citizens",
+                "Count",
+                "CurrencyAmount",
+                "PPM",
+                "Meters",
+                "Celsius",
+                "Units",
+                "Percent",
+                "SkillPoints"
+            ],
+            "type": "string"
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.ChatMessageV1": {
+            "type": "object",
+            "properties": {
+                "Timestamp": {
+                    "format": "double",
+                    "type": "number",
+                    "readOnly": true
+                },
+                "Sender": {
+                    "type": "string",
+                    "readOnly": true
+                },
+                "Receiver": {
+                    "type": "string",
+                    "readOnly": true
+                },
+                "Text": {
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.CivicActionV1": {
+            "type": "object",
+            "properties": {
+                "ActionOnComplete": {
+                    "type": "string"
+                },
+                "ActionOnCompleteTableHeader": {
+                    "type": "string"
+                },
+                "ActionOnCompleteTable": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Localization.LocString"
+                    }
+                },
+                "ActionOnCompleteFullDescription": {
+                    "type": "string"
+                },
+                "DistrictMapBefore": {
+                    "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.MapV1"
+                },
+                "DistrictMapAfter": {
+                    "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.MapV1"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.CommandMessageV1": {
+            "type": "object",
+            "properties": {
+                "Type": {
+                    "type": "string"
+                },
+                "Message": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.CommandResultV1": {
+            "type": "object",
+            "properties": {
+                "CommandMessages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.CommandMessageV1"
+                    }
+                },
+                "OriginalCommand": {
+                    "type": "string"
+                },
+                "Errored": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.DistrictMapV1": {
+            "type": "object",
+            "properties": {
+                "DistrictMetadata": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.DistrictV1"
+                    }
+                },
+                "DistrictMap": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.DistrictV1": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "R": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "G": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "B": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.ElectedTitleV1": {
+            "type": "object",
+            "properties": {
+                "Table": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Localization.LocString"
+                    }
+                },
+                "OccupantNames": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "UserDescription": {
+                    "type": "string"
+                },
+                "State": {
+                    "type": "string"
+                },
+                "Creator": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.ElectionChoiceV1": {
+            "type": "object",
+            "properties": {
+                "Id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "Speech": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.ElectionCommentV1": {
+            "type": "object",
+            "properties": {
+                "Username": {
+                    "type": "string"
+                },
+                "Text": {
+                    "type": "string"
+                },
+                "Graph": {
+                    "$ref": "#/definitions/Eco.Stats.Graph"
+                },
+                "Map": {
+                    "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.MapV1"
+                },
+                "Timestamp": {
+                    "format": "double",
+                    "type": "number"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.ElectionProcessV1": {
+            "type": "object",
+            "properties": {
+                "Table": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Shared.Localization.LocString"
+                    }
+                },
+                "OccupantNames": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "UserDescription": {
+                    "type": "string"
+                },
+                "State": {
+                    "type": "string"
+                },
+                "Creator": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.ElectionResultsV1": {
+            "type": "object",
+            "properties": {
+                "ChoiceRanks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Gameplay.Civics.Elections.ChoiceResults"
+                    }
+                },
+                "TotalVotesForWinner": {
+                    "format": "float",
+                    "type": "number"
+                },
+                "Winners": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Result": {
+                    "type": "string"
+                },
+                "Finished": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.EntityV1": {
+            "type": "object",
+            "properties": {
+                "Position": {
+                    "$ref": "#/definitions/System.Numerics.Vector3"
+                },
+                "EntityType": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.ExecuteCommandV1": {
+            "type": "object",
+            "properties": {
+                "Command": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.FrontPageV1": {
+            "type": "object",
+            "properties": {
+                "Info": {
+                    "$ref": "#/definitions/Eco.Shared.Networking.ServerInfo"
+                },
+                "Graphs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Stats.NamedGraph"
+                    },
+                    "readOnly": true
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.GameServerElectionV1": {
+            "type": "object",
+            "properties": {
+                "Choices": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ElectionChoiceV1"
+                    }
+                },
+                "TotalVotes": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "TimeEnd": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "TimeEndAgo": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "TimeStart": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "TimeStartAgo": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "Finished": {
+                    "type": "boolean"
+                },
+                "Passed": {
+                    "type": "boolean"
+                },
+                "PendingVote": {
+                    "type": "boolean"
+                },
+                "Comments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ElectionCommentV1"
+                    }
+                },
+                "Provisions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.CivicActionV1"
+                    }
+                },
+                "Results": {
+                    "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ElectionResultsV1"
+                },
+                "ElectionProcess": {
+                    "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ElectionProcessV1"
+                },
+                "PositionForWinner": {
+                    "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.ElectedTitleV1"
+                },
+                "BooleanElection": {
+                    "type": "boolean"
+                },
+                "ElectionDescription": {
+                    "type": "string"
+                },
+                "Id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "UserDescription": {
+                    "type": "string"
+                },
+                "State": {
+                    "type": "string"
+                },
+                "Creator": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.LawV1": {
+            "type": "object",
+            "properties": {
+                "Description": {
+                    "type": "string",
+                    "readOnly": true
+                },
+                "Id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "UserDescription": {
+                    "type": "string"
+                },
+                "State": {
+                    "type": "string"
+                },
+                "Creator": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.MapStatsV1": {
+            "type": "object",
+            "properties": {
+                "Size": {
+                    "$ref": "#/definitions/Eco.Shared.Math.Vector3i"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.MapV1": {
+            "type": "object",
+            "properties": {
+                "layerSelected": {
+                    "type": "string"
+                },
+                "frame": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "timeStart": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "timeEnd": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "playSpeed": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "currentTime": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "flat": {
+                    "type": "boolean"
+                },
+                "pause": {
+                    "type": "boolean"
+                },
+                "camPos": {
+                    "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.Vector3V1"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.PluginInfoV1": {
+            "type": "object",
+            "properties": {
+                "TypeName": {
+                    "type": "string"
+                },
+                "Status": {
+                    "type": "string"
+                },
+                "HasConfig": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.ProfilingResultV1": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "type": "string"
+                },
+                "Size": {
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "CreatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.RunoffVoteV1": {
+            "type": "object",
+            "properties": {
+                "ElectionID": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "Voter": {
+                    "type": "string"
+                },
+                "RankedVotes": {
+                    "type": "array",
+                    "items": {
+                        "format": "int32",
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.UserV1": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "type": "string"
+                },
+                "SlgId": {
+                    "type": "string"
+                },
+                "SteamId": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.Vector3V1": {
+            "type": "object",
+            "properties": {
+                "x": {
+                    "format": "float",
+                    "type": "number"
+                },
+                "y": {
+                    "format": "float",
+                    "type": "number"
+                },
+                "z": {
+                    "format": "float",
+                    "type": "number"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.WorldLayers.LayerInputV1": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "type": "string"
+                },
+                "Color": {
+                    "$ref": "#/definitions/Eco.Shared.Utils.Color"
+                },
+                "DoubleEnded": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.WorldLayers.LayerRelationshipV1": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "type": "string"
+                },
+                "RelationshipType": {
+                    "type": "string"
+                },
+                "Output": {
+                    "type": "string"
+                },
+                "Inputs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.WorldLayers.LayerInputV1"
+                    }
+                },
+                "HiddenInputs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Tooltip": {
+                    "type": "string"
+                },
+                "Guid": {
+                    "type": "string",
+                    "readOnly": true
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.WorldLayers.WorldLayerGroupV1": {
+            "type": "object",
+            "properties": {
+                "Category": {
+                    "type": "string"
+                },
+                "List": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Eco.Web.Core.DataTransferObjects.V1.WorldLayers.WorldLayerV1"
+                    }
+                }
+            }
+        },
+        "Eco.Web.Core.DataTransferObjects.V1.WorldLayers.WorldLayerV1": {
+            "type": "object",
+            "properties": {
+                "LayerName": {
+                    "type": "string"
+                },
+                "LayerDisplayName": {
+                    "type": "string"
+                },
+                "Summary": {
+                    "type": "string"
+                },
+                "Tooltip": {
+                    "type": "string"
+                },
+                "Category": {
+                    "type": "string"
+                },
+                "DisplayRow": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            }
+        },
+        "Eco.WebServer.Web.Controllers.StatReturn": {
+            "type": "object",
+            "properties": {
+                "Times": {
+                    "type": "array",
+                    "items": {
+                        "format": "int32",
+                        "type": "integer"
+                    }
+                },
+                "Values": {
+                    "type": "array",
+                    "items": {
+                        "format": "float",
+                        "type": "number"
+                    }
+                },
+                "Interval": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "Unit": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.WebServer.Web.Models.Action": {
+            "enum": [
+                "Success",
+                "Fail"
+            ],
+            "type": "string"
+        },
+        "Eco.WebServer.Web.Models.AdminReturnModel": {
+            "type": "object",
+            "properties": {
+                "Action": {
+                    "$ref": "#/definitions/Eco.WebServer.Web.Models.Action"
+                },
+                "Message": {
+                    "type": "string"
+                }
+            }
+        },
+        "Eco.WebServer.Web.Models.ExportGameModel": {
+            "type": "object",
+            "properties": {
+                "S3ExportUri": {
+                    "type": "string"
+                }
+            }
+        },
+        "System.Guid": {
+            "type": "object"
+        },
+        "System.Numerics.Vector3": {
+            "type": "object",
+            "properties": {
+                "X": {
+                    "format": "float",
+                    "type": "number"
+                },
+                "Y": {
+                    "format": "float",
+                    "type": "number"
+                },
+                "Z": {
+                    "format": "float",
+                    "type": "number"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "authtoken": {
+            "type": "apiKey",
+            "name": "authtoken",
+            "in": "query"
+        },
+        "authtokentype": {
+            "type": "apiKey",
+            "name": "authtokentype",
+            "in": "query"
+        }
+    },
+    "tags": [{
+            "name": "DataExport"
+        },
+        {
+            "name": "Map"
+        },
+        {
+            "name": "Admin"
+        },
+        {
+            "name": "Chat"
+        },
+        {
+            "name": "Command"
+        },
+        {
+            "name": "Election"
+        },
+        {
+            "name": "Law"
+        },
+        {
+            "name": "Log"
+        },
+        {
+            "name": "Plugins"
+        },
+        {
+            "name": "ProfilingResults"
+        },
+        {
+            "name": "Root"
+        },
+        {
+            "name": "Stats"
+        },
+        {
+            "name": "Users"
+        },
+        {
+            "name": "WorldLayer"
+        }
+    ]
+}
